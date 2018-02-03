@@ -1,4 +1,4 @@
-/*
+l/*
  * fs/dcache.c
  *
  * Complete reimplementation
@@ -81,9 +81,14 @@
  *   dentry1->d_lock
  *     dentry2->d_lock
  */
-int sysctl_vfs_cache_pressure __read_mostly = 100;
+int sysctl_vfs_cache_pressure __read_mostly = 30;
 EXPORT_SYMBOL_GPL(sysctl_vfs_cache_pressure);
 
+#ifdef CONFIG_STATE_NOTIFIER
+static int adaptive_cache_pressure = 30; /* Value should be same as above. */
+#endif
+
+static __cacheline_aligned_in_smp DEFINE_SPINLOCK(dcache_lru_lock);
 __cacheline_aligned_in_smp DEFINE_SEQLOCK(rename_lock);
 
 EXPORT_SYMBOL(rename_lock);
