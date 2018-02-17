@@ -1,5 +1,5 @@
 /* Copyright (c) 2009-2016, The Linux Foundation. All rights reserved.
- * Copyright (C) 2019 XiaoMi, Inc.
+ * Copyright (C) 2018 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -55,7 +55,6 @@ static struct msm_camera_i2c_fn_t msm_sensor_cci_func_tbl = {
 	.i2c_poll =  msm_camera_cci_i2c_poll,
 };
 
-#if 1
 struct gpio_flash_led_pinctrl{
 	bool gpio_enabled;
 	u32 en_gpio;
@@ -63,7 +62,6 @@ struct gpio_flash_led_pinctrl{
 };
 
 static struct gpio_flash_led_pinctrl front_pinctrl;
-#endif
 
 void msm_subtorch_brightness_set(struct led_classdev *led_cdev,
 				enum led_brightness value)
@@ -74,12 +72,12 @@ void msm_subtorch_brightness_set(struct led_classdev *led_cdev,
 			gpio_direction_output(front_pinctrl.en_gpio, 0);
 			gpio_direction_output(front_pinctrl.en_gpio, 1);
 			udelay(25);
-			for (i=0;i<10;i++) {
+			for (i = 0; i < 10; i++) {
 				gpio_direction_output(front_pinctrl.en_gpio, 0);
 				udelay(1);
 				gpio_direction_output(front_pinctrl.en_gpio, 1);
 				udelay(1);
-				pr_err("[WENDELL] i= %d\n",i);
+				pr_err("[WENDELL] i= %d\n", i);
 			}
 		}
 	} else {
@@ -509,7 +507,6 @@ static int32_t msm_frontflash_init(
 	return 0;
 }
 
-#if 1
 static int32_t msm_frontflash_gpio_low(
 	struct msm_flash_ctrl_t *flash_ctrl,
 	struct msm_flash_cfg_data_t *flash_data)
@@ -523,14 +520,14 @@ static int32_t msm_frontflash_gpio_low(
 		gpio_direction_output(front_pinctrl.en_gpio, 1);
 		udelay(25);
 		if (flash_data->flash_current[0] != 5000) {
-          num -= 1;
-        }
-        for (; i < num; i++)  {
-        gpio_direction_output(front_pinctrl.en_gpio, 0);
-		udelay(1);
-		gpio_direction_output(front_pinctrl.en_gpio, 1);
-		udelay(1);
-		pr_err("[WENDELL]low i= %d\n",i);
+		   num -= 1;
+		 }
+		 for (; i < num; i++)  {
+			gpio_direction_output(front_pinctrl.en_gpio, 0);
+			udelay(1);
+			gpio_direction_output(front_pinctrl.en_gpio, 1);
+			udelay(1);
+			pr_err("[WENDELL]low i= %d\n", i);
 		}
     }
 
@@ -548,12 +545,12 @@ static int32_t msm_frontflash_gpio_high(
     if (gpio_is_valid(front_pinctrl.en_gpio)) {
 		gpio_direction_output(front_pinctrl.en_gpio, 1);
 		udelay(25);
-		for (i=0;i<10;i++) {
-        gpio_direction_output(front_pinctrl.en_gpio, 0);
-		udelay(1);
-		gpio_direction_output(front_pinctrl.en_gpio, 1);
-		udelay(1);
-		pr_err("[WENDELL]high i= %d\n",i);
+		for (i = 0; i < 10; i++) {
+			gpio_direction_output(front_pinctrl.en_gpio, 0);
+			udelay(1);
+			gpio_direction_output(front_pinctrl.en_gpio, 1);
+			udelay(1);
+			pr_err("[WENDELL]high i= %d\n", i);
 		}
     }
 
@@ -575,7 +572,6 @@ static int32_t msm_frontflash_gpio_off(
 
 	return 0;
 }
-#endif
 
 static int32_t msm_frontflash_low(
 	struct msm_flash_ctrl_t *flash_ctrl,
@@ -628,7 +624,7 @@ static int32_t msm_frontflash_high(
 	int32_t i = 0;
 
     pr_err("[frontflash]torch_num = %d,flash_num = %d\n",
-		    flash_ctrl->torch_num_sources,flash_ctrl->flash_num_sources);
+		    flash_ctrl->torch_num_sources, flash_ctrl->flash_num_sources);
 
 
 
@@ -1025,23 +1021,22 @@ static int32_t msm_frontflash_get_dt_data(struct device_node *of_node,
 		return rc;
 	}
 
-	#if 1
 	front_pinctrl.en_gpio = of_get_named_gpio_flags(of_node, "gpios",
-                 0, &front_pinctrl.en_gpio_flags);
+				 0, &front_pinctrl.en_gpio_flags);
 
-    if (gpio_is_valid(front_pinctrl.en_gpio)) {
-        rc = gpio_request(front_pinctrl.en_gpio, "front_flash_en_gpio");
-        if (rc) {
-            pr_err("[WENDELL]-%s: reset gpio request failed\n", __func__);
-        } else {
-    		pr_err("[WENDELL]-%s: front_pinctrl.en_gpio=%d\n", __func__, front_pinctrl.en_gpio);
-        	rc = gpio_direction_output(front_pinctrl.en_gpio, 0);
-        	if (rc) {
-             	pr_err("[WENDELL]-%s: set_direction for reset gpio failed\n", __func__);
-        	}
-    	}
+	if (gpio_is_valid(front_pinctrl.en_gpio)) {
+		rc = gpio_request(front_pinctrl.en_gpio, "front_flash_en_gpio");
+		if (rc) {
+			pr_err("[WENDELL]-%s: reset gpio request failed\n", __func__);
+		} else {
+			pr_err("[WENDELL]-%s: front_pinctrl.en_gpio=%d\n", __func__, front_pinctrl.en_gpio);
+			rc = gpio_direction_output(front_pinctrl.en_gpio, 0);
+			if (rc) {
+				pr_err("[WENDELL]-%s: set_direction for reset gpio failed\n", __func__);
+			}
+		}
 	}
-	#endif
+
 
 	if (fctrl->flash_driver_type == FLASH_DRIVER_DEFAULT)
 		fctrl->flash_driver_type = FLASH_DRIVER_GPIO;
