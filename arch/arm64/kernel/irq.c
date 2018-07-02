@@ -65,7 +65,7 @@ static bool migrate_one_irq(struct irq_desc *desc)
 	 * If this is a per-CPU interrupt, or the affinity does not
 	 * include this CPU, then we have nothing to do.
 	 */
-	if (irqd_is_per_cpu(d) || !cpumask_test_cpu(smp_processor_id(), affinity))
+	if (irqd_is_per_cpu(d) || !cpumask_test_cpu(raw_smp_processor_id(), affinity))
 		return false;
 
 	if (cpumask_any_and(affinity, cpu_online_mask) >= nr_cpu_ids)
@@ -98,8 +98,8 @@ void migrate_irqs(void)
 		raw_spin_unlock(&desc->lock);
 
 		if (affinity_broken)
-			pr_warn_ratelimited("IRQ%u no longer affine to CPU%u\n",
-					    i, smp_processor_id());
+			pr_debug("IRQ%u no longer affine to CPU%u\n",
+					    i, raw_smp_processor_id());
 	}
 
 	local_irq_restore(flags);

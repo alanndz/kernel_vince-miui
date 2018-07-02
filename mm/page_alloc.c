@@ -1474,7 +1474,7 @@ static void drain_pages(unsigned int cpu)
  */
 void drain_local_pages(void *arg)
 {
-	drain_pages(smp_processor_id());
+	drain_pages(raw_smp_processor_id());
 }
 
 /*

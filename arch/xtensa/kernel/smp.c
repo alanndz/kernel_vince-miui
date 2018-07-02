@@ -104,7 +104,7 @@ void __init smp_init_cpus(void)
 
 void __init smp_prepare_boot_cpu(void)
 {
-	unsigned int cpu = smp_processor_id();
+	unsigned int cpu = raw_smp_processor_id();
 	BUG_ON(cpu != 0);
 	cpu_asid_cache(cpu) = ASID_USER_FIRST;
 }
@@ -119,7 +119,7 @@ static DECLARE_COMPLETION(cpu_running);
 void secondary_start_kernel(void)
 {
 	struct mm_struct *mm = &init_mm;
-	unsigned int cpu = smp_processor_id();
+	unsigned int cpu = raw_smp_processor_id();
 
 	init_mmu();
 
@@ -266,7 +266,7 @@ int __cpu_up(unsigned int cpu, struct task_struct *idle)
  */
 int __cpu_disable(void)
 {
-	unsigned int cpu = smp_processor_id();
+	unsigned int cpu = raw_smp_processor_id();
 
 	/*
 	 * Take this CPU offline.  Once we clear this, we can't return,
@@ -369,7 +369,7 @@ static void send_ipi_message(const struct cpumask *callmask,
 	unsigned long mask = 0;
 
 	for_each_cpu(index, callmask)
-		if (index != smp_processor_id())
+		if (index != raw_smp_processor_id())
 			mask |= 1 << index;
 
 	set_er(mask, MIPISET(msg_id));
@@ -395,7 +395,7 @@ void smp_send_stop(void)
 	struct cpumask targets;
 
 	cpumask_copy(&targets, cpu_online_mask);
-	cpumask_clear_cpu(smp_processor_id(), &targets);
+	cpumask_clear_cpu(raw_smp_processor_id(), &targets);
 	send_ipi_message(&targets, IPI_CPU_STOP);
 }
 
@@ -407,7 +407,7 @@ static void ipi_cpu_stop(unsigned int cpu)
 
 irqreturn_t ipi_interrupt(int irq, void *dev_id)
 {
-	unsigned int cpu = smp_processor_id();
+	unsigned int cpu = raw_smp_processor_id();
 	struct ipi_data *ipi = &per_cpu(ipi_data, cpu);
 	unsigned int msg;
 	unsigned i;
