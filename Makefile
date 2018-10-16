@@ -622,6 +622,31 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, attribute-alias)
 KBUILD_CFLAGS	+= $(call cc-option,-fno-PIE)
 KBUILD_AFLAGS	+= $(call cc-option,-fno-PIE)
 
+# -pipe makes compilation faster
+# msm8996 is not affected so disable errata fixes
+KBUILD_CFLAGS   += -pipe -mno-fix-cortex-a53-843419 -mno-fix-cortex-a53-835769 -Wno-attribute-alias -Wno-address-of-packed-member
+
+ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
+KBUILD_CFLAGS	+= $(call cc-option,-Oz,-Os)
+KBUILD_CFLAGS	+= $(call cc-disable-warning,maybe-uninitialized,)
+else
+KBUILD_CFLAGS   += -ffast-math -funsafe-math-optimizations -march=armv8-a+crypto+fp16+crc
+ifeq ($(cc-name),gcc)
+KBUILD_CFLAGS   += -Ofast
+KBUILD_CFLAGS   += -mtune=cortex-a73.cortex-a53 -mcpu=cortex-a73.cortex-a53+crypto+fp16+crc -floop-nest-optimize -fgraphite-identity -ftree-loop-distribution
+else
+KBUILD_CFLAGS   += -O3 -fno-signed-zeros -freciprocal-math -ffp-contract=fast
+KBUILD_CFLAGS   += -mtune=cortex-a53 -mcpu=cortex-a53+crypto+fp16+crc
+endif
+endif
+
+ifdef CONFIG_SODA_SPARKLING_FLAGS
+KBUILD_CFLAGS += -march=armv8-a+simd+crypto+crc -mtune=cortex-a57.cortex-a53 -fmerge-all-constants -fmodulo-sched -fmodulo-sched-allow-regmoves -floop-interchange
+# -finline-functions -> no significant performance jump, significantly increased size
+# -fpredictive-commoning -> slowing down intercore scores
+# -ffast-math -ftree-vectorize -ftree-slp-vectorize
+endif
+
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
