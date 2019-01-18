@@ -8,6 +8,7 @@
  *
  *  This code is stongly inspired on the iptables code which is
  *  Copyright (C) 1999 Paul `Rusty' Russell & Michael J. Neuling
+ * Copyright (C) 2019 XiaoMi, Inc.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -2102,12 +2103,9 @@ static int size_entry_mwt(struct ebt_entry *entry, const unsigned char *base,
 	 * offsets are relative to beginning of struct ebt_entry (i.e., 0).
 	 */
 	for (i = 0; i < 4 ; ++i) {
-		if (offsets[i] > *total)
-			return -EINVAL;
 
-		if (i < 3 && offsets[i] == *total)
+		if (offsets[i] >= *total)
 			return -EINVAL;
-
 		if (i == 0)
 			continue;
 		if (offsets[i-1] > offsets[i])
