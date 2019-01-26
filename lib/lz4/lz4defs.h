@@ -64,9 +64,35 @@ typedef struct _U64_S { u64 v; } U64_S;
 	} while (0)
 #endif
 
-#define COPYLENGTH 8
-#define ML_BITS  4
-#define ML_MASK  ((1U << ML_BITS) - 1)
+/*-************************************
+ *	Constants
+ **************************************/
+#define MINMATCH 4
+
+#define WILDCOPYLENGTH 8
+#define LASTLITERALS 5
+#define MFLIMIT (WILDCOPYLENGTH + MINMATCH)
+/*
+ * ensure it's possible to write 2 x wildcopyLength
+ * without overflowing output buffer
+ */
+#define MATCH_SAFEGUARD_DISTANCE  ((2 * WILDCOPYLENGTH) - MINMATCH)
+
+/* Increase this value ==> compression run slower on incompressible data */
+#define LZ4_SKIPTRIGGER 6
+
+#define HASH_UNIT sizeof(size_t)
+
+#define KB (1 << 10)
+#define MB (1 << 20)
+#define GB (1U << 30)
+
+#define MAXD_LOG 16
+#define MAX_DISTANCE ((1 << MAXD_LOG) - 1)
+#define STEPSIZE sizeof(size_t)
+
+#define ML_BITS	4
+#define ML_MASK	((1U << ML_BITS) - 1)
 #define RUN_BITS (8 - ML_BITS)
 #define RUN_MASK ((1U << RUN_BITS) - 1)
 #define MEMORY_USAGE	14
@@ -138,11 +164,10 @@ typedef struct _U64_S { u64 v; } U64_S;
 #define LZ4_SECURECOPY	LZ4_WILDCOPY
 #define HTYPE const u8*
 
-#ifdef __BIG_ENDIAN
-#define LZ4_NBCOMMONBYTES(val) (__builtin_clz(val) >> 3)
-#else
-#define LZ4_NBCOMMONBYTES(val) (__builtin_ctz(val) >> 3)
-#endif
+typedef enum { endOnOutputSize = 0, endOnInputSize = 1 } endCondition_directive;
+typedef enum { decode_full_block = 0, partial_decode = 1 } earlyEnd_directive;
+
+#define LZ4_STATIC_ASSERT(c)	BUILD_BUG_ON(!(c))
 
 #endif
 
