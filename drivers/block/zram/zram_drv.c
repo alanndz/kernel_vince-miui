@@ -1275,16 +1275,6 @@ static int zram_add(void)
 	disk_to_dev(zram->disk)->groups = zram_disk_attr_groups;
 	add_disk(zram->disk);
 
-<<<<<<< HEAD
-=======
-	ret = sysfs_create_group(&disk_to_dev(zram->disk)->kobj,
-				&zram_disk_attr_group);
-	if (ret < 0) {
-		pr_err("Error creating sysfs group for device %d\n",
-				device_id);
-		goto out_free_disk;
-	}
->>>>>>> Kernel: Xiaomi kernel changes for Redmi 6Pro, Redmi 5Plus and Mi 5X
 	strlcpy(zram->compressor, default_compressor, sizeof(zram->compressor));
 	zram->meta = NULL;
 
@@ -1366,17 +1356,12 @@ static ssize_t hot_remove_store(struct class *class,
 	struct zram *zram;
 	int ret, dev_id;
 
-<<<<<<< HEAD
-	for (i = 0; i < nr; i++) {
-		zram = &zram_devices[i];
-=======
 	/* dev_id is gendisk->first_minor, which is `int' */
 	ret = kstrtoint(buf, 10, &dev_id);
 	if (ret)
 		return ret;
 	if (dev_id < 0)
 		return -EINVAL;
->>>>>>> Kernel: Xiaomi kernel changes for Redmi 6Pro, Redmi 5Plus and Mi 5X
 
 	mutex_lock(&zram_index_mutex);
 
