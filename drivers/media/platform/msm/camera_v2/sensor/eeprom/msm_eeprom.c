@@ -166,8 +166,6 @@ static int read_eeprom_memory(struct msm_eeprom_ctrl_t *e_ctrl,
 	uint8_t *memptr = block->mapdata;
 	uint8_t sensor_id[2] = {0};
 
-			uint8_t sensor_id[2] = {0};
-
 	pr_err("%s %d\n", __func__, __LINE__);
 
 	if (!e_ctrl) {

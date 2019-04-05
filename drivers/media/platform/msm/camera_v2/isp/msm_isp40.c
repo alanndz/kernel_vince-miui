@@ -779,7 +779,6 @@ static long msm_vfe40_reset_hardware(struct vfe_device *vfe_dev,
 	long rc = 0;
 	uint32_t irq_status0;
 	init_completion(&vfe_dev->reset_complete);
-	spin_unlock_irqrestore(&vfe_dev->reset_completion_lock, flags);
 
 	if (first_start) {
 		msm_camera_io_w_mb(0x1FF, vfe_dev->vfe_base + 0xC);
