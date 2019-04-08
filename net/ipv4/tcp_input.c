@@ -2903,16 +2903,8 @@ static void tcp_fastretrans_alert(struct sock *sk, const int acked,
 
 	if (do_lost)
 		tcp_update_scoreboard(sk, fast_rexmit);
-	*rexmit = REXMIT_LOST;
-}
-
-static void tcp_update_rtt_min(struct sock *sk, u32 rtt_us)
-{
-	struct tcp_sock *tp = tcp_sk(sk);
-	u32 wlen = sysctl_tcp_min_rtt_wlen * HZ;
-
-	minmax_running_min(&tp->rtt_min, wlen, tcp_time_stamp,
-			   rtt_us ? : jiffies_to_usecs(1));
+	tcp_cwnd_reduction(sk, prior_unsacked, fast_rexmit);
+	tcp_xmit_retransmit_queue(sk);
 }
 
 static inline bool tcp_ack_update_rtt(struct sock *sk, const int flag,

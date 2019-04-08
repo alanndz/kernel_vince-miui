@@ -656,17 +656,6 @@ static inline u32 tcp_rto_min_us(struct sock *sk)
 	return jiffies_to_usecs(tcp_rto_min(sk));
 }
 
-static inline bool tcp_ca_dst_locked(const struct dst_entry *dst)
-{
-	return dst_metric_locked(dst, RTAX_CC_ALGO);
-}
-
-/* Minimum RTT in usec. ~0 means not available. */
-static inline u32 tcp_min_rtt(const struct tcp_sock *tp)
-{
-	return minmax_get(&tp->rtt_min);
-}
-
 /* Compute the actual receive window we are currently advertising.
  * Rcv_nxt can be after the window if our peer push more data
  * than the offered window.
