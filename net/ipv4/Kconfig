@@ -619,14 +619,6 @@ config TCP_CONG_DCTCP
 	For further details see:
 	  http://simula.stanford.edu/~alizade/Site/DCTCP_files/dctcp-final.pdf
 
-config TCP_CONG_TSUNAMI
-        tristate "Tsunami - BBR Based TCP Congestion with magic optimiztion"
-        default n
-        ---help---
- 
-	Tsunami TCP Congestion Control - BBR Based TCP Congedtion with magic optimiztion
-	Modified by Yankee.
-
 choice
 	prompt "Default TCP congestion control"
 	default DEFAULT_CUBIC
@@ -658,9 +650,6 @@ choice
 	config DEFAULT_DCTCP
 		bool "DCTCP" if TCP_CONG_DCTCP=y
 
-	config DEFAULT_TSUNAMI
-                bool "Tsunami" if TCP_CONG_TSUNAMI=y
-
 	config DEFAULT_RENO
 		bool "Reno"
 endchoice
@@ -683,7 +672,6 @@ config DEFAULT_TCP_CONG
 	default "veno" if DEFAULT_VENO
 	default "reno" if DEFAULT_RENO
 	default "dctcp" if DEFAULT_DCTCP
-	default "tsunami" if DEFAULT_TSUNAMI
 	default "cubic"
 
 config TCP_MD5SIG
