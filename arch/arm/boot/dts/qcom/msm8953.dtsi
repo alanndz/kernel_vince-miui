@@ -17,6 +17,8 @@
 #include <dt-bindings/regulator/qcom,rpm-smd-regulator.h>
 #include <dt-bindings/gpio/gpio.h>
 
+#define MHZ_TO_MBPS(mhz, w) ((mhz * 1000000 * w) / (10240 * 1024))
+
 / {
 	model = "Qualcomm Technologies, Inc. MSM 8953";
 	compatible = "qcom,msm8953";
@@ -970,46 +972,10 @@
 			< 1689600000 4>,
 			< 1804800000 5>,
 			< 1958400000 6>,
-			< 2016000000 7>;
-		qcom,speed0-bin-v0-cci =
-			<          0 0>,
-			<  261120000 1>,
-			<  414720000 2>,
-			<  560640000 3>,
-			<  675840000 4>,
-			<  721920000 5>,
-			<  783360000 6>,
-			<  806400000 7>;
-		qcom,speed2-bin-v0-cl =
-			<          0 0>,
-			<  652800000 1>,
-			< 1036800000 2>,
-			< 1401600000 3>,
-			< 1689600000 4>,
-			< 1804800000 5>,
-			< 1958400000 6>,
-			< 2016000000 7>;
-		qcom,speed2-bin-v0-cci =
-			<          0 0>,
-			<  261120000 1>,
-			<  414720000 2>,
-			<  560640000 3>,
-			<  675840000 4>,
-			<  721920000 5>,
-			<  783360000 6>,
-			<  806400000 7>;
-		qcom,speed7-bin-v0-cl =
-			<          0 0>,
-			<  652800000 1>,
-			< 1036800000 2>,
-			< 1401600000 3>,
-			< 1689600000 4>,
-			< 1804800000 5>,
-			< 1958400000 6>,
 			< 2016000000 7>,
-			< 2150400000 8>,
+			< 2150000000 8>,
 			< 2208000000 9>;
-		qcom,speed7-bin-v0-cci =
+		qcom,speed0-bin-v0-cci =
 			<          0 0>,
 			<  261120000 1>,
 			<  414720000 2>,
@@ -1020,20 +986,6 @@
 			<  806400000 7>,
 			<  860160000 8>,
 			<  883200000 9>;
-		qcom,speed6-bin-v0-cl =
-			<          0 0>,
-			<  652800000 1>,
-			< 1036800000 2>,
-			< 1401600000 3>,
-			< 1689600000 4>,
-			< 1804800000 5>;
-		qcom,speed6-bin-v0-cci =
-			<          0 0>,
-			<  261120000 1>,
-			<  414720000 2>,
-			<  560640000 3>,
-			<  675840000 4>,
-			<  721920000 5>;
 		#clock-cells = <1>;
 	};
 
@@ -1041,8 +993,11 @@
 		compatible = "qcom,msm-cpufreq";
 		clock-names = "l2_clk", "cpu0_clk", "cpu1_clk", "cpu2_clk",
 				"cpu3_clk", "cpu4_clk", "cpu5_clk",
-				"cpu6_clk", "cpu7_clk";
+				"cpu6_clk", "cpu7_clk", "cpu8_clk",
+				"cpu9_clk"; 
 		clocks = <&clock_cpu clk_cci_clk>,
+			 <&clock_cpu clk_a53_pwr_clk>,
+			 <&clock_cpu clk_a53_pwr_clk>,
 			 <&clock_cpu clk_a53_pwr_clk>,
 			 <&clock_cpu clk_a53_pwr_clk>,
 			 <&clock_cpu clk_a53_pwr_clk>,
@@ -1070,17 +1025,19 @@
 		qcom,src-dst-ports = <1 512>;
 		qcom,active-only;
 		qcom,bw-tbl =
-			<   769 /*  100.8 MHz */ >,
-			<  1611 /*  211.2 MHz */ >,     /*Low SVS*/
-			<  2124 /*  278.4 MHz */ >,
-			<  2929 /*  384   MHz */ >,
-			<  3221 /*  422.4 MHz */ >,	/* SVS */
-			<  4248 /*  556.8 MHz */ >,
-			<  5126 /*  672   MHz */ >,
-			<  5859 /*  768   MHz */ >,     /* SVS+  */
-			<  6152 /*  806.4 MHz */ >,
-			<  6445 /*  844.8 MHz */ >,     /* NOM   */
-			<  7104 /*  931.2 MHz */ >;     /* TURBO */
+			< MHZ_TO_MBPS(1008, 8) /*  769  100.8  MHz */ >,
+			< MHZ_TO_MBPS(2112, 8) /* 1611  211.2  MHz */ >,     /*Low SVS*/
+			< MHZ_TO_MBPS(2784, 8) /* 2124  278.4  MHz */ >,
+			< MHZ_TO_MBPS(3848, 8) /* 2935  384.8   MHz */ >,
+			< MHZ_TO_MBPS(4224, 8) /* 3222  422.4  MHz */ >,     /* SVS */
+			< MHZ_TO_MBPS(5568, 8) /* 4248  556.8  MHz */>,
+			< MHZ_TO_MBPS(6720, 8) /* 5126  672    MHz */ >,
+			< MHZ_TO_MBPS(7680, 8) /* 5859  768    MHz */ >,     /* SVS+  */
+			< MHZ_TO_MBPS(8064, 8) /* 6152  806.4  MHz */ >,
+			< MHZ_TO_MBPS(8448, 8) /* 6445  844.8  MHz */ >,     /* NOM   */
+			< MHZ_TO_MBPS(9312, 8) /* 7104  931.2  MHz */ >,     /* TURBO */
+			< MHZ_TO_MBPS(9750, 8) /* 7438  975    MHz */ >,
+			< MHZ_TO_MBPS(10362, 8) /* 7905 1036.2 MHz */ >;
 	};
 
 	mincpubw: qcom,mincpubw {
@@ -1089,17 +1046,19 @@
 		qcom,src-dst-ports = <1 512>;
 		qcom,active-only;
 		qcom,bw-tbl =
-			<   769 /*  100.8 MHz */ >,
-			<  1611 /*  211.2 MHz */ >,     /*Low SVS*/
-			<  2124 /*  278.4 MHz */ >,
-			<  2929 /*  384   MHz */ >,
-			<  3221 /*  422.4 MHz */ >,	/* SVS */
-			<  4248 /*  556.8 MHz */ >,
-			<  5126 /*  672   MHz */ >,
-			<  5859 /*  768   MHz */ >,     /* SVS+  */
-			<  6152 /*  806.4 MHz */ >,
-			<  6445 /*  844.8 MHz */ >,     /* NOM   */
-			<  7104 /*  931.2 MHz */ >;     /* TURBO */
+			< MHZ_TO_MBPS(1008, 8) /*  769  100.8  MHz */ >,
+			< MHZ_TO_MBPS(2112, 8) /* 1611  211.2  MHz */ >,     /*Low SVS*/
+			< MHZ_TO_MBPS(2784, 8) /* 2124  278.4  MHz */ >,
+			< MHZ_TO_MBPS(3848, 8) /* 2935  384.8   MHz */ >,
+			< MHZ_TO_MBPS(4224, 8) /* 3222  422.4  MHz */ >,     /* SVS */
+			< MHZ_TO_MBPS(5568, 8) /* 4248  556.8  MHz */>,
+			< MHZ_TO_MBPS(6720, 8) /* 5126  672    MHz */ >,
+			< MHZ_TO_MBPS(7680, 8) /* 5859  768    MHz */ >,     /* SVS+  */
+			< MHZ_TO_MBPS(8064, 8) /* 6152  806.4  MHz */ >,
+			< MHZ_TO_MBPS(8448, 8) /* 6445  844.8  MHz */ >,     /* NOM   */
+			< MHZ_TO_MBPS(9312, 8) /* 7104  931.2  MHz */ >,     /* TURBO */
+			< MHZ_TO_MBPS(9750, 8) /* 7438  975    MHz */ >,
+			< MHZ_TO_MBPS(10362, 8) /* 7905 1036.2 MHz */ >;
 	};
 
 	qcom,cpu-bwmon {
@@ -1115,21 +1074,23 @@
 		cpubw-cpufreq {
 		target-dev = <&cpubw>;
 		cpu-to-dev-map =
-			 <  652800  1611>,
-			 < 1036800  3221>,
-			 < 1401600  5859>,
-			 < 1689600  6445>,
-			 < 1804800  7104>,
-			 < 1958400  7104>,
-			 < 2208000  7104>;
+			 <  652800  MHZ_TO_MBPS(2112, 8) >,
+			 < 1036800  MHZ_TO_MBPS(4224, 8) >,
+			 < 1401600  MHZ_TO_MBPS(7680, 8) >,
+			 < 1689600  MHZ_TO_MBPS(8448, 8) >,
+			 < 1804800  MHZ_TO_MBPS(9312, 8) >,
+			 < 1958400  MHZ_TO_MBPS(9312, 8) >,
+			 < 2016000  MHZ_TO_MBPS(9312, 8) >,
+			 < 2150400  MHZ_TO_MBPS(9750, 8) >,
+			 < 2208000  MHZ_TO_MBPS(10362, 8) >;
 		};
 
 		mincpubw-cpufreq {
 			target-dev = <&mincpubw>;
 			cpu-to-dev-map =
-				<  652800 1611 >,
-				< 1401600 3221 >,
-				< 2208000 5859 >;
+				<  652800 MHZ_TO_MBPS(2112, 8) >,
+				< 1401600 MHZ_TO_MBPS(4224, 8) >,
+				< 2208000 MHZ_TO_MBPS(8448, 8) >;
 		};
 	};
 
