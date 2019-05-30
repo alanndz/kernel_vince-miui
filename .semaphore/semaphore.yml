@@ -1,0 +1,20 @@
+version: v1.0
+name: Building Kernel
+agent:
+  machine:
+    type: e1-standard-8
+    os_image: ubuntu1804
+
+blocks:
+  - name: "Build"
+    task:
+      env_vars:
+        - name: APP_ENV
+          value: prod
+      jobs:
+      - name: Kernel Build
+        commands:
+          - checkout
+          - chmod +x .semaphore/build.sh
+          - bash .semaphore/build.sh
+
