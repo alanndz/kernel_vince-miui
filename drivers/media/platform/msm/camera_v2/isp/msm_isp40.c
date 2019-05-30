@@ -777,8 +777,11 @@ static long msm_vfe40_reset_hardware(struct vfe_device *vfe_dev,
 	uint32_t first_start, uint32_t blocking_call)
 {
 	long rc = 0;
-	uint32_t irq_status0;
+	unsigned long flags;
+
+	spin_lock_irqsave(&vfe_dev->reset_completion_lock, flags);
 	init_completion(&vfe_dev->reset_complete);
+	spin_unlock_irqrestore(&vfe_dev->reset_completion_lock, flags);
 
 	if (first_start) {
 		msm_camera_io_w_mb(0x1FF, vfe_dev->vfe_base + 0xC);
@@ -794,14 +797,7 @@ static long msm_vfe40_reset_hardware(struct vfe_device *vfe_dev,
 
 	if (blocking_call) {
 		rc = wait_for_completion_timeout(
-			&vfe_dev->reset_complete, msecs_to_jiffies(500));
-		if (rc <= 0) {
-		irq_status0 = msm_camera_io_r(vfe_dev->vfe_base + 0x38);
-		pr_err("%s: reset timeout, irq_status0 0x%x, \n", __func__, irq_status0);
-		if (irq_status0 & (1 << 31))
-		return 1;
-		}
-		pr_err("%s:%d failed: reset timeout\n", __func__, __LINE__);
+			&vfe_dev->reset_complete, msecs_to_jiffies(50));
 	}
 	return rc;
 }
