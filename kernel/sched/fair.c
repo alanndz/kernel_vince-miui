@@ -4877,53 +4877,6 @@ static unsigned long target_load(int cpu, int type)
 
 	if (type == 0 || !sched_feat(LB_BIAS))
 		return total;
-}
-
-extern const u64 max_cfs_quota_period;
-
-static enum hrtimer_restart sched_cfs_period_timer(struct hrtimer *timer)
-{
-	struct cfs_bandwidth *cfs_b =
-		container_of(timer, struct cfs_bandwidth, period_timer);
-	ktime_t now;
-	int overrun;
-	int idle = 0;
-	int count = 0;
-
-	raw_spin_lock(&cfs_b->lock);
-	for (;;) {
-		now = hrtimer_cb_get_time(timer);
-		overrun = hrtimer_forward(timer, now, cfs_b->period);
-
-		if (!overrun)
-			break;
-
-		if (++count > 3) {
-			u64 new, old = ktime_to_ns(cfs_b->period);
-
-			new = (old * 147) / 128; /* ~115% */
-			new = min(new, max_cfs_quota_period);
-
-			cfs_b->period = ns_to_ktime(new);
-
-			/* since max is 1s, this is limited to 1e9^2, which fits in u64 */
-			cfs_b->quota *= new;
-			cfs_b->quota = div64_u64(cfs_b->quota, old);
-
-			pr_warn_ratelimited(
-        "cfs_period_timer[cpu%d]: period too short, scaling up (new cfs_period_us %lld, cfs_quota_us = %lld)\n",
-	                        smp_processor_id(),
-	                        div_u64(new, NSEC_PER_USEC),
-                                div_u64(cfs_b->quota, NSEC_PER_USEC));
-
-			/* reset count so we don't come right back in here */
-			count = 0;
-		}
-
-		idle = do_sched_cfs_period_timer(cfs_b, overrun);
-	}
-	raw_spin_unlock(&cfs_b->lock);
-
 	return max(rq->cpu_load[type-1], total);
 }
 
