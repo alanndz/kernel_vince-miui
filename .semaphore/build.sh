@@ -87,7 +87,7 @@ export STRIP="$DIREX/bin/$(echo "$(find "$DIREX/bin" -type f -name "aarch64-*-gc
 			sed -e 's/gcc/strip/')"
  
 export BOT_API_KEY=$(openssl enc -base64 -d <<< Nzk5MDU4OTY3OkFBRlpjVEM5SU9lVEt4YkJucHVtWG02VHlUOTFzMzU5Y3VVCg==)
-export CHAT_ID=671339354
+export CHAT_ID=$(openssl enc -base64 -d <<< LTEwMDEyMzAyMDQ5MjMK)
 export BUILD_FAIL="CAADBQAD5xsAAsZRxhW0VwABTkXZ3wcC"
 export BUILD_SUCCESS="CAADBQADJgADWtMDKHVGVS6aeEzlAg"
  
