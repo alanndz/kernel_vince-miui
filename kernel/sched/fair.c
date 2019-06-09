@@ -4872,6 +4872,7 @@ static unsigned long source_load(int cpu, int type)
  */
 static unsigned long target_load(int cpu, int type)
 {
+	struct rq *rq = cpu_rq(cpu);
 	unsigned long total = weighted_cpuload(cpu);
 
 	if (type == 0 || !sched_feat(LB_BIAS))
