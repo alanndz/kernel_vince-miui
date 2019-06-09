@@ -1190,7 +1190,6 @@ bool should_numa_migrate_memory(struct task_struct *p, struct page * page,
 
 static unsigned long weighted_cpuload(const int cpu);
 static unsigned long source_load(int cpu, int type);
-static unsigned long target_load(int cpu, int type);
 static unsigned long capacity_of(int cpu);
 static long effective_load(struct task_group *tg, int cpu, long wl, long wg);
 
@@ -4864,19 +4863,6 @@ static unsigned long source_load(int cpu, int type)
 		return total;
 
 	return min(rq->cpu_load[type-1], total);
-}
-
-/*
- * Return a high guess at the load of a migration-target cpu weighted
- * according to the scheduling class and "nice" value.
- */
-static unsigned long target_load(int cpu, int type)
-{
-	struct rq *rq = cpu_rq(cpu);
-	unsigned long total = weighted_cpuload(cpu);
-
-	if (type == 0 || !sched_feat(LB_BIAS))
-		return total;
 }
 
 extern const u64 max_cfs_quota_period;
