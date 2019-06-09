@@ -219,10 +219,10 @@
 			#size-cells = <1>;
 
 			qcom,iterm-ma = <200>;
-			qcom,float-voltage-mv = <4400>;
+			qcom,float-voltage-mv = <4380>;
 			qcom,resume-delta-mv = <50>;
 			qcom,chg-inhibit-fg;
-			qcom,rparasitic-uohm = <100000>;
+			qcom,rparasitics-uohm = <100000>;
 			qcom,bms-psy-name = "bms";
 			qcom,charge-unknown-battery;
 			qcom,thermal-mitigation = <1500 700 600 0>;
@@ -233,8 +233,8 @@
 			qcom,force-aicl-rerun;
 			qcom,aicl-rerun-period-s = <180>;
 			qcom,override-usb-current;
-			qcom,fastchg-current-comp = <900>;
-			qcom,float-voltage-comp = <16>;
+			qcom,fastchg-current-comp = <1200>;
+			qcom,float-voltage-comp = <15>;
 			qcom,chgr@1000 {
 				reg = <0x1000 0x100>;
 				interrupts =	<0x2 0x10 0x0>,
@@ -335,7 +335,7 @@
 			compatible = "qcom,qpnp-fg";
 			#address-cells = <1>;
 			#size-cells = <1>;
-			qcom,resume-soc-raw = <253>;
+			qcom,resume-soc-raw = <254>;
 			status = "okay";
 			qcom,bcl-lm-threshold-ma = <127>;
 			qcom,bcl-mh-threshold-ma = <405>;
@@ -346,8 +346,8 @@
 			qcom,cycle-counter-en;
 			qcom,hold-soc-while-full;
 			qcom,capacity-learning-on;
-			qcom,fg-cc-cv-threshold-mv =<4390>;
-			qcom,vbat-estimate-diff-mv = <250>;
+			qcom,fg-cc-cv-threshold-mv =<4370>;
+			qcom,vbat-estimate-diff-mv = <200>;
 			qcom,fg-soc@4000 {
 			status = "okay";
 				reg = <0x4000 0x100>;
@@ -449,7 +449,7 @@
 		};
 
 		labibb: qpnp-labibb-regulator {
-			status = "disabled";
+			status = "okay";
 			spmi-dev-container;
 			compatible = "qcom,qpnp-labibb-regulator";
 			#address-cells = <1>;
@@ -482,7 +482,7 @@
 				qcom,qpnp-ibb-full-pull-down;
 				qcom,qpnp-ibb-pull-down-enable;
 				qcom,qpnp-ibb-switching-clock-frequency = <1480>;
-				qcom,qpnp-ibb-limit-maximum-current = <1550>;
+				qcom,qpnp-ibb-limit-maximum-current = <200>;
 				qcom,qpnp-ibb-debounce-cycle = <16>;
 				qcom,qpnp-ibb-limit-max-current-enable;
 				qcom,qpnp-ibb-ps-enable;
@@ -510,7 +510,7 @@
 				qcom,qpnp-lab-pull-down-enable;
 				qcom,qpnp-lab-switching-clock-frequency =
 									<1600>;
-				qcom,qpnp-lab-limit-maximum-current = <800>;
+				qcom,qpnp-lab-limit-maximum-current = <200>;
 				qcom,qpnp-lab-limit-max-current-enable;
 				qcom,qpnp-lab-ps-threshold = <40>;
 				qcom,qpnp-lab-ps-enable;
@@ -585,7 +585,7 @@
 				qcom,max-current = <1000>;
 				qcom,duration = <1280>;
 				qcom,id = <0>;
-				qcom,current = <625>;
+				qcom,current = <1000>;
 			};
 
 			pmi8950_flash1: qcom,flash_1 {
@@ -598,16 +598,6 @@
 				qcom,id = <1>;
 				qcom,current = <625>;
 			};
-
-			pmi8950_flashlight: qcom,flashlight {
-                                label = "torch";
-                                qcom,led-name = "flashlight";
-                                qcom,default-led-trigger =
-                                                "torch0_trigger";
-                                qcom,max-current = <200>;
-                                qcom,id = <0>;
-                                qcom,current = <120>;
-                        };
 
 			pmi8950_torch0: qcom,torch_0 {
 				label = "torch";
