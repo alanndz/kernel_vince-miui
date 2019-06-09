@@ -4877,6 +4877,7 @@ static unsigned long target_load(int cpu, int type)
 
 	if (type == 0 || !sched_feat(LB_BIAS))
 		return total;
+}
 
 extern const u64 max_cfs_quota_period;
 
