@@ -74,3 +74,5 @@
 		/*qcom,supply-post-on-sleep = <10>;*/
 	};
 };
+
+#include "aln-msm8953-gpu-oc.dtsi"
