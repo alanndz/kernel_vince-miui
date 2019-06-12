@@ -138,17 +138,4 @@
 	};
 };
 
-&cpubw_compute {
-	qcom,core-dev-table =
-		 <  652800  MHZ_TO_MBPS(2112, 8) >,
-		 < 1036800  MHZ_TO_MBPS(4224, 8) >,
-		 < 1401600  MHZ_TO_MBPS(7680, 8) >,
-		 < 1689600  MHZ_TO_MBPS(8448, 8) >,
-		 < 1804800  MHZ_TO_MBPS(9312, 8) >,
-		 < 1958400  MHZ_TO_MBPS(9312, 8) >,
-		 < 2016000  MHZ_TO_MBPS(9312, 8) >,
-		 < 2150400  MHZ_TO_MBPS(9750, 8) >,
-		 < 2208000  MHZ_TO_MBPS(10362, 8) >;
-};
-
 #include "aln-msm8953-regulator-oc.dtsi"
