@@ -2392,9 +2392,11 @@
 	};
 };
 
+#include "aln-msm8953-cpu-oc.dtsi"
 #include "msm-pm8953-rpm-regulator.dtsi"
 #include "msm-pm8953.dtsi"
 #include "msm8953-regulator.dtsi"
+#include "aln-msm8953-regulator-oc.dtsi"
 #include "msm-audio.dtsi"
 #include "msm8953-audio.dtsi"
 #include "msm-gdsc-8916.dtsi"
