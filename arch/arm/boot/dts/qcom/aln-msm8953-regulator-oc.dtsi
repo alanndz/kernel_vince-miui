@@ -1,0 +1,92 @@
+/*
+ * Copyright (c) 2015-2017, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2019 XiaoMi, Inc.
+ * Copyright (C) 2019 @alanndz (Telegram and Github)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&rpm_bus {
+	/delete-node/ rpm-regulator-smpa1;
+
+	rpm-regulator-smpa1 {
+		status = "okay";
+		pm8953_s1: regulator-s1 {
+			regulator-min-microvolt =
+					<870000>;
+			regulator-max-microvolt =
+					<1225000>;
+			qcom,init-voltage = <1100000>;
+			status = "okay";
+		};
+	};
+};
+
+&apc_vreg {
+	regulator-max-microvolt = <9>;
+	qcom,cpr-speed-bin-corners =
+		<9 9 9 9 9 9 9 9>;
+	qcom,cpr-corners =
+		<9 9 9 9 9 9 9 9>;
+
+	qcom,cpr-corner-fmax-map =
+		<1 2 4 9>;
+
+	qcom,cpr-voltage-ceiling =
+		<715000  790000 860000 865000 920000
+		 990000 1065000 1065000 1065000>;
+
+	qcom,cpr-voltage-floor =
+		<500000  500000 500000 500000 500000
+		 500000  500000 500000 500000>;
+
+	qcom,cpr-floor-to-ceiling-max-range =
+		 <50000 50000 50000 50000 50000
+		  50000 50000 50000 50000>;
+
+	qcom,mem-acc-voltage =
+		<1 1 2 2 2 2 2 2 2>;
+
+	qcom,corner-frequencies =
+		<652800000 1036800000 1401600000
+		 1689600000 1804800000 1958400000
+		 2016000000 2150400000 2208000000>;
+
+	qcom,cpr-open-loop-voltage-fuse-adjustment =
+		<     0      0      0     0>,
+		< 25000      0   5000 40000>,
+		< 25000      0   5000 40000>,
+		< 25000      0   5000 40000>,
+		<     0      0      0     0>,
+		<     0      0      0     0>,
+		<     0      0      0     0>,
+		<     0      0      0     0>;
+
+	qcom,cpr-closed-loop-voltage-fuse-adjustment =
+		<      0        0        0      0>,
+		<  10000 (-15000)        0  25000>,
+		<  10000 (-15000)        0  25000>,
+		<(-5000) (-30000) (-15000)  10000>,
+		<      0        0        0      0>,
+		<      0        0        0      0>,
+		<      0        0        0      0>,
+		<      0        0        0      0>;
+
+	qcom,cpr-ro-scaling-factor =
+	      <3610 3790    0 2200 2450 2310 2170 2210
+	       2330 2210 2470 2340  780 2700 2450 2090>,
+	      <3610 3790    0 2200 2450 2310 2170 2210
+	       2330 2210 2470 2340  780 2700 2450 2090>,
+	      <3610 3790    0 2200 2450 2310 2170 2210
+	       2330 2210 2470 2340  780 2700 2450 2090>,
+	      <3610 3790    0 2200 2450 2310 2170 2210
+	       2330 2210 2470 2340  780 2700 2450 2090>;
+
+};

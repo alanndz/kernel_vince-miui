@@ -1,0 +1,154 @@
+/*
+ * Copyright (c) 2015-2017, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2019 XiaoMi, Inc.
+ * Copyright (C) 2019 @alanndz (Telegram and Github)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+ 
+#define MHZ_TO_MBPS(mhz, w) ((mhz * 1000000 * w) / (10240 * 1024))
+
+&clock_cpu {
+	qcom,speed0-bin-v0-cl =
+		<          0 0>,
+		<  652800000 1>,
+		< 1036800000 2>,
+		< 1401600000 3>,
+		< 1689600000 4>,
+		< 1804800000 5>,
+		< 1958400000 6>,
+		< 2016000000 7>,
+		< 2150000000 8>,
+		< 2208000000 9>;
+	qcom,speed0-bin-v0-cci =
+		<          0 0>,
+		<  261120000 1>,
+		<  414720000 2>,
+		<  560640000 3>,
+		<  675840000 4>,
+		<  721920000 5>,
+		<  783360000 6>,
+		<  806400000 7>,
+		<  860160000 8>,
+		<  883200000 9>;
+
+	/delete-property/ qcom,speed2-bin-v0-cl;
+	/delete-property/ qcom,speed2-bin-v0-cci;
+	/delete-property/ qcom,speed7-bin-v0-cl;
+	/delete-property/ qcom,speed7-bin-v0-cci;
+	/delete-property/ qcom,speed6-bin-v0-cl;
+	/delete-property/ qcom,speed6-bin-v0-cci;
+
+};
+
+&msm_cpufreq {
+
+	clock-names = "l2_clk", "cpu0_clk", "cpu1_clk", "cpu2_clk",
+		"cpu3_clk", "cpu4_clk", "cpu5_clk",
+		"cpu6_clk", "cpu7_clk", "cpu8_clk",
+		"cpu9_clk"; 
+
+	clocks = <&clock_cpu clk_cci_clk>,
+		<&clock_cpu clk_a53_pwr_clk>,
+		<&clock_cpu clk_a53_pwr_clk>,
+		<&clock_cpu clk_a53_pwr_clk>,
+		<&clock_cpu clk_a53_pwr_clk>,
+		<&clock_cpu clk_a53_pwr_clk>,
+		<&clock_cpu clk_a53_pwr_clk>,
+		<&clock_cpu clk_a53_pwr_clk>,
+		<&clock_cpu clk_a53_pwr_clk>,
+		<&clock_cpu clk_a53_pwr_clk>,
+		<&clock_cpu clk_a53_pwr_clk>;
+
+	qcom,cpufreq-table =
+		 <  652800 >,
+		 < 1036800 >,
+		 < 1401600 >,
+		 < 1689600 >,
+		 < 1804800 >,
+		 < 1958400 >,
+		 < 2016000 >,
+		 < 2150400 >,
+		 < 2208000 >;
+};
+
+&cpubw {
+
+	qcom,bw-tbl =
+		< MHZ_TO_MBPS(1008, 8) /*  769  100.8  MHz */ >,
+		< MHZ_TO_MBPS(2112, 8) /* 1611  211.2  MHz */ >,     /*Low SVS*/
+		< MHZ_TO_MBPS(2784, 8) /* 2124  278.4  MHz */ >,
+		< MHZ_TO_MBPS(3848, 8) /* 2935  384.8   MHz */ >,
+		< MHZ_TO_MBPS(4224, 8) /* 3222  422.4  MHz */ >,     /* SVS */
+		< MHZ_TO_MBPS(5568, 8) /* 4248  556.8  MHz */ >,
+		< MHZ_TO_MBPS(6720, 8) /* 5126  672    MHz */ >,
+		< MHZ_TO_MBPS(7680, 8) /* 5859  768    MHz */ >,     /* SVS+  */
+		< MHZ_TO_MBPS(8064, 8) /* 6152  806.4  MHz */ >,
+		< MHZ_TO_MBPS(8448, 8) /* 6445  844.8  MHz */ >,     /* NOM   */
+		< MHZ_TO_MBPS(9312, 8) /* 7104  931.2  MHz */ >,     /* TURBO */
+		< MHZ_TO_MBPS(9750, 8) /* 7438  975    MHz */ >,
+		< MHZ_TO_MBPS(10362, 8) /* 7905 1036.2 MHz */ >;
+};
+
+&mincpubw {
+
+	qcom,bw-tbl =
+		< MHZ_TO_MBPS(1008, 8) /*  769  100.8  MHz */ >,
+		< MHZ_TO_MBPS(2112, 8) /* 1611  211.2  MHz */ >,     /*Low SVS*/
+		< MHZ_TO_MBPS(2784, 8) /* 2124  278.4  MHz */ >,
+		< MHZ_TO_MBPS(3848, 8) /* 2935  384.8   MHz */ >,
+		< MHZ_TO_MBPS(4224, 8) /* 3222  422.4  MHz */ >,     /* SVS */
+		< MHZ_TO_MBPS(5568, 8) /* 4248  556.8  MHz */ >,
+		< MHZ_TO_MBPS(6720, 8) /* 5126  672    MHz */ >,
+		< MHZ_TO_MBPS(7680, 8) /* 5859  768    MHz */ >,     /* SVS+  */
+		< MHZ_TO_MBPS(8064, 8) /* 6152  806.4  MHz */ >,
+		< MHZ_TO_MBPS(8448, 8) /* 6445  844.8  MHz */ >,     /* NOM   */
+		< MHZ_TO_MBPS(9312, 8) /* 7104  931.2  MHz */ >,     /* TURBO */
+		< MHZ_TO_MBPS(9750, 8) /* 7438  975    MHz */ >,
+		< MHZ_TO_MBPS(10362, 8) /* 7905 1036.2 MHz */ >;
+};
+
+&devfreq_cpufreq {
+	cpu-to-dev-map =
+		 <  652800  MHZ_TO_MBPS(2112, 8) >,
+		 < 1036800  MHZ_TO_MBPS(4224, 8) >,
+		 < 1401600  MHZ_TO_MBPS(7680, 8) >,
+		 < 1689600  MHZ_TO_MBPS(8448, 8) >,
+		 < 1804800  MHZ_TO_MBPS(9312, 8) >,
+		 < 1958400  MHZ_TO_MBPS(9312, 8) >,
+		 < 2016000  MHZ_TO_MBPS(9312, 8) >,
+		 < 2150400  MHZ_TO_MBPS(9750, 8) >,
+		 < 2208000  MHZ_TO_MBPS(10362, 8) >;
+	
+	/delete-node/ mincpubw-cpufreq;
+	
+	mincpubw-cpufreq {
+		target-dev = <&mincpubw>;
+		cpu-to-dev-map =
+			<  652800 MHZ_TO_MBPS(2112, 8) >,
+			< 1401600 MHZ_TO_MBPS(4224, 8) >,
+			< 2208000 MHZ_TO_MBPS(8448, 8) >;
+	};
+};
+
+&cpubw_compute {
+	qcom,core-dev-table =
+		 <  652800  MHZ_TO_MBPS(2112, 8) >,
+		 < 1036800  MHZ_TO_MBPS(4224, 8) >,
+		 < 1401600  MHZ_TO_MBPS(7680, 8) >,
+		 < 1689600  MHZ_TO_MBPS(8448, 8) >,
+		 < 1804800  MHZ_TO_MBPS(9312, 8) >,
+		 < 1958400  MHZ_TO_MBPS(9312, 8) >,
+		 < 2016000  MHZ_TO_MBPS(9312, 8) >,
+		 < 2150400  MHZ_TO_MBPS(9750, 8) >,
+		 < 2208000  MHZ_TO_MBPS(10362, 8) >;
+};
+
+#include "aln-msm8953-regulator-oc.dtsi"

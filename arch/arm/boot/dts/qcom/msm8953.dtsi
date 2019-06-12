@@ -1111,7 +1111,7 @@
 		qcom,target-dev = <&cpubw>;
 	};
 
-	devfreq-cpufreq {
+	devfreq_cpufreq: devfreq-cpufreq {
 		cpubw-cpufreq {
 		target-dev = <&cpubw>;
 		cpu-to-dev-map =
