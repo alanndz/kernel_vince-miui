@@ -15,7 +15,6 @@
 /dts-v1/;
 
 #include "msm8953.dtsi"
-#include "aln-msm8953-cpu-oc.dtsi"
 #include "msm-pmi8950.dtsi"
 
 / {
