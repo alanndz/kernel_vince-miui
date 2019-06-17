@@ -1049,8 +1049,10 @@
 		compatible = "qcom,msm-cpufreq";
 		clock-names = "l2_clk", "cpu0_clk", "cpu1_clk", "cpu2_clk",
 				"cpu3_clk", "cpu4_clk", "cpu5_clk",
-				"cpu6_clk", "cpu7_clk";
+				"cpu6_clk", "cpu7_clk", "cpu8_clk", "cpu9_clk";
 		clocks = <&clock_cpu clk_cci_clk>,
+			 <&clock_cpu clk_a53_pwr_clk>,
+			 <&clock_cpu clk_a53_pwr_clk>,
 			 <&clock_cpu clk_a53_pwr_clk>,
 			 <&clock_cpu clk_a53_pwr_clk>,
 			 <&clock_cpu clk_a53_pwr_clk>,
@@ -1088,7 +1090,9 @@
 			<  5859 /*  768   MHz */ >,     /* SVS+  */
 			<  6152 /*  806.4 MHz */ >,
 			<  6445 /*  844.8 MHz */ >,     /* NOM   */
-			<  7104 /*  931.2 MHz */ >;     /* TURBO */
+			<  7104 /*  931.2 MHz */ >,     /* TURBO */
+			<  8859 >,
+			<  9831 >;
 	};
 
 	mincpubw: qcom,mincpubw {
@@ -1107,7 +1111,9 @@
 			<  5859 /*  768   MHz */ >,     /* SVS+  */
 			<  6152 /*  806.4 MHz */ >,
 			<  6445 /*  844.8 MHz */ >,     /* NOM   */
-			<  7104 /*  931.2 MHz */ >;     /* TURBO */
+			<  7104 /*  931.2 MHz */ >,     /* TURBO */
+			<  8859 >,
+			<  9831 >;
 	};
 
 	qcom,cpu-bwmon {
@@ -1128,8 +1134,8 @@
 			 < 1401600  5859>,
 			 < 1689600  6445>,
 			 < 1804800  7104>,
-			 < 1958400  7104>,
-			 < 2208000  7104>;
+			 < 1958400  8859>,
+			 < 2208000  9831>;
 		};
 
 		mincpubw-cpufreq {
@@ -1137,7 +1143,7 @@
 			cpu-to-dev-map =
 				<  652800 1611 >,
 				< 1401600 3221 >,
-				< 2208000 5859 >;
+				< 2208000 6445 >;
 		};
 	};
 

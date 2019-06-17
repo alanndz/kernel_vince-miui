@@ -19,7 +19,7 @@
 		status = "okay";
 		pm8953_s1: regulator-s1 {
 			regulator-min-microvolt = <870000>;
-			regulator-max-microvolt = <1156000>;
+			regulator-max-microvolt = <1190000>;
 			qcom,init-voltage = <1000000>;
 			status = "okay";
 		};
@@ -401,7 +401,7 @@
 				qcom,cpr-fuse-combos = <64>;
 				qcom,cpr-speed-bins = <8>;
 				qcom,cpr-speed-bin-corners =
-					<9 0 9 0 0 0 7 9>;
+					<9 9 9 9 9 9 9 9>;
 				qcom,cpr-corners =
 					/* Speed bin 0 */
 					<9 9 9 9 9 9 9 9>,
