@@ -16,5 +16,5 @@ blocks:
         commands:
           - checkout
           - chmod +x .semaphore/build.sh
-          - bash .semaphore/build.sh rel
+          - bash .semaphore/build.sh
 
