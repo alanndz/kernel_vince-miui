@@ -1299,7 +1299,6 @@ static void req_done(unsigned long data)
 	struct crypto_engine *pengine = (struct crypto_engine *)data;
 	struct crypto_priv *cp;
 	unsigned long flags;
-	unsigned int cpu;
 	struct qcrypto_resp_ctx *arsp;
 	int res;
 	u32 type = 0;
@@ -1318,16 +1317,8 @@ static void req_done(unsigned long data)
 		tfm_ctx = crypto_tfm_ctx(areq->tfm);
 		arsp->res = res;
 	}
-
-	/* spin_unlock_irqrestore(&cp->lock, flags);
-	* _start_qcrypto_process(cp, pengine); */
-
-	cpu = raw_smp_processor_id();
-	pengine->irq_cpu = cpu;
-	if (pengine->first_engine) {
-		if (cpu  != cp->cpu_getting_irqs_frm_first_ce)
-			cp->cpu_getting_irqs_frm_first_ce = cpu;
-	}
+	spin_unlock_irqrestore(&cp->lock, flags);
+	_start_qcrypto_process(cp, pengine);
 	if (areq)
 		_qcrypto_tfm_complete(cp, type, tfm_ctx);
 }
@@ -1997,18 +1988,6 @@ static int _start_qcrypto_process(struct crypto_priv *cp,
 	struct ahash_request *ahash_req;
 	struct aead_request *aead_req;
 	struct qcrypto_resp_ctx *arsp;
-	struct qcrypto_req_control *pqcrypto_req_control;
-	unsigned int cpu = MAX_SMP_CPU;
-
-	if (ACCESS_ONCE(cp->ce_req_proc_sts) == STOPPED)
-		return 0;
-
-	if (in_interrupt()) {
-		cpu = raw_smp_processor_id();
-		if (cpu >= MAX_SMP_CPU)
-			cpu = MAX_SMP_CPU - 1;
-	} else
-		cpu = MAX_SMP_CPU;
 
 	pstat = &_qcrypto_stat;
 
