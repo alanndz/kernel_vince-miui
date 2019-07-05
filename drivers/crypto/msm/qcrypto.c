@@ -1299,6 +1299,7 @@ static void req_done(unsigned long data)
 	struct crypto_engine *pengine = (struct crypto_engine *)data;
 	struct crypto_priv *cp;
 	unsigned long flags;
+	unsigned int cpu;
 	struct qcrypto_resp_ctx *arsp;
 	int res;
 	u32 type = 0;
