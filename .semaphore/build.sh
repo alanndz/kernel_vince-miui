@@ -15,7 +15,7 @@ install-package --update-new openssl ccache bc bash git-core gnupg build-essenti
 
 export KERNEL_NAME="aLn"
 export KERNEL_VERSION="MIUI"
-export CODENAME="OC"
+export CODENAME="OC_FINAL-Vince"
 export CONFIG_FILE="vince_defconfig"
 # Build Release For fin for release and lol on testing
 # Compiler
