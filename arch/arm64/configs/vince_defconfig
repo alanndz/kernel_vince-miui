@@ -1121,6 +1121,11 @@ CONFIG_DMA_SHARED_BUFFER=y
 CONFIG_DMA_CMA=y
 
 #
+# Fast Charge
+#
+CONFIG_FORCE_FAST_CHARGE=y
+
+#
 # Default contiguous memory area size:
 #
 CONFIG_CMA_SIZE_MBYTES=16
